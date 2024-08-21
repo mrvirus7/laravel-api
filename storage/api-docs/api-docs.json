@@ -1,0 +1,235 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "APIs For Thrift Store",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/students": {
+            "get": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "Get list of students",
+                "operationId": "be6b28575f2c1fe9446f1018bcefe6d7",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number for pagination",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Student"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "Insert a new student",
+                "operationId": "1ec179122cb8931e01ef16b74cfa0c87",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Student"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Student created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Student"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/api/students/{id}": {
+            "get": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "Get a student by ID",
+                "operationId": "2dc0d00ee3dc99b3edc14fa96c00f9f2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of student to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Student"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "Update a student by ID",
+                "operationId": "494b4a4356d9f2d79c03671cf4eab43c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of student to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Student"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Student updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Student"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "Delete a student by ID",
+                "operationId": "4c8790220adbe32217a7c6e44e849758",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of student to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Student deleted successfully"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Student": {
+                "title": "Student",
+                "required": [
+                    "id",
+                    "firstname",
+                    "lastname",
+                    "email",
+                    "phone"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID of the student",
+                        "type": "integer"
+                    },
+                    "firstname": {
+                        "description": "First name of the student",
+                        "type": "string"
+                    },
+                    "lastname": {
+                        "description": "Last name of the student",
+                        "type": "string"
+                    },
+                    "phone": {
+                        "description": "Phone number of the student",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "Email address of the student",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "bearerAuth",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Students",
+            "description": "Students"
+        }
+    ]
+}
