@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Student;
+use Validator;
   /**
      * @OA\Get(
      *     path="/api/students",
@@ -55,7 +56,7 @@ class StudentController extends Controller
 
     }
 
-    /**
+ /**
  * @OA\Post(
  *     path="/api/students",
  *     summary="Insert a new student",
@@ -65,9 +66,18 @@ class StudentController extends Controller
  *         @OA\JsonContent(ref="#/components/schemas/Student")
  *     ),
  *     @OA\Response(
- *         response=201,
+ *         response=200,
  *         description="Student created successfully",
  *         @OA\JsonContent(ref="#/components/schemas/Student")
+ *     ),
+ *     @OA\Response(
+ *         response=422,
+ *         description="Validation errors",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="status", type="integer", example=422),
+ *             @OA\Property(property="errors", type="object")
+ *         )
  *     ),
  *     @OA\Response(
  *         response=400,
@@ -77,7 +87,24 @@ class StudentController extends Controller
  */
 
     public function saveData(Request $request){
+
+        $validator = Validator::make($request->all(),[
+
+            'firstname'=>'required|string|max:199',
+            'lastname'=>'required|string|max:199',
+            'phone'=>'required|digits:10',
+            'email'=>'required|email|max:199',
+
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status'=> 422,
+                'errors' => $validator->errors(),
+            ],422);
+        }else{
         $students=Student::create([
+
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'phone' => $request->phone,
@@ -94,6 +121,7 @@ class StudentController extends Controller
                 'message'=>'Not Successiffully'
             ],404);
 
+        }
         }
     }
  /**
